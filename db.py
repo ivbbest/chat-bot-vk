@@ -1,5 +1,6 @@
 import sqlite3 as sq
 
+
 try:
     connect = sq.connect('product.db')
 
@@ -48,5 +49,3 @@ try:
     #         print(row)
 except sq.Error as error:
     print("Ошибка при подключении к sqlite", error)
-
-
