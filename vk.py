@@ -14,6 +14,7 @@ class VKLongPoll:
         self.v = version
         self.token = token
         self.id = group_id
+        self.url = 'https://api.vk.com/method/'
 
         self.connect()
 
@@ -59,7 +60,7 @@ class VKLongPoll:
         values['v'] = self.v
 
         response = self.session.post(
-            'https://api.vk.com/method/' + method,
+            self.url + method,
             values
         ).json()
 
@@ -69,10 +70,20 @@ class VKLongPoll:
         else:
             return response
 
-    def sendMessage(self, user_id, text):
+    def send_message(self, user_id, text):
         values = {
             'user_id': user_id,
             'message': text
         }
 
         self.method('messages.send', values)
+
+    # Получим имя пользователя
+    def users_name_get(self, user_id=''):
+        users_url = self.url + 'users.get'
+        user_params = {
+            'count': 1000,
+            'user_id': user_id,
+        }
+        res = requests.get(users_url, params={'access_token': self.token, 'v': self.v, **user_params})
+        return res.json()['response'][0]['first_name']
