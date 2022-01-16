@@ -1,8 +1,54 @@
+import json
 import sys
 import random
 from settings import token, version, group_id
 from vk import VKLongPoll
+from keybord import VkKeyboard
+from random import randint
 
+template = {
+    "type": "carousel",
+    "elements": [{
+            "photo_id": "-109837093_457242811",
+            "action": {
+                "type": "open_photo"
+            },
+            "buttons": [{
+                "action": {
+                    "type": "text",
+                    "label": "Текст кнопки 🌚",
+                    "payload": "{}"
+                }
+            }]
+        },
+        {
+            "photo_id": "-109837093_457242811",
+            "action": {
+                "type": "open_photo"
+            },
+            "buttons": [{
+                "action": {
+                    "type": "text",
+                    "label": "Текст кнопки 2",
+                    "payload": "{}"
+                }
+            }]
+        },
+        {
+            "photo_id": "-109837093_457242811",
+            "action": {
+                "type": "open_photo"
+            },
+            "buttons": [{
+                "action": {
+                    "type": "text",
+                    "label": "Текст кнопки 3",
+                    "payload": "{}"
+                }
+            }]
+        }
+    ]
+}
 
 def main():
     # CONFIG = loadConfig()
@@ -22,13 +68,56 @@ def main():
     # us = User(vk, sql)
 
     for event in vk.listen():
+
         if event['type'] == 'message_new':
+            # or event['object']['message']['text'] == 'Начать':
 
             user_id = int(event['object']['message']['from_id'])
             body = event['object']['message']['text']
-            name_user = vk.users_name_get(user_id)
-            print(name_user)
+            # breakpoint()
+            # name_user = vk.users_name_get(user_id)
+            # print(name_user)
 
+            keyboard_1 = VkKeyboard(one_time=False, inline=False)
+            keyboard_1.add_button(
+                label="Хлеб"
+            )
+            keyboard_1.add_line()
+            keyboard_1.add_button(
+                label="Торты"
+            )
+            keyboard_1.add_line()
+            keyboard_1.add_button(
+                label="Пирожки"
+            )
+            keyboard_1.add_line()
+            keyboard_1.add_button(
+                label="Назад"
+            )
+
+            vk.send_message(user_id, 'Hi my friends', keyboard=keyboard_1.get_keyboard(),
+                            random_id=randint(0, 100))
+
+            if body.lower() == 'хлеб':
+                vk.send_message_carousel(user_id, 'Выбрал категорию хлеб', template=json.dumps(template),
+                                         random_id=randint(0, 100))
+                keyboard = VkKeyboard(one_time=True, inline=False)
+                keyboard.add_line()
+                keyboard.add_button(
+                    label="Назад",
+                    payload={'button': '4'},
+                )
+                if body.lower() == 'назад':
+                    vk.send_message(user_id, 'Выбрал категорию назад')
+                    continue
+
+            elif body.lower() == 'торты':
+                vk.send_message(user_id, 'Выбрал категорию торты')
+            elif body.lower() == 'пирожки':
+                vk.send_message(user_id, 'Выбрал категорию пирожки')
+            elif body.lower() == 'назад':
+                vk.send_message(user_id, 'Выбрал категорию назад')
+                continue
             # print('%d: %s' % (user_id, body))
 
             # user = us.get(user_id)
@@ -82,12 +171,20 @@ def main():
 
 
         elif event['type'] == 'message_reply':
-            if 'from_id' in event['object']:
-                print('REPLY from %d: %s' % (event['object']['from_id'], event['object']['text']))
-            else:
-                print('REPLY from BOT')
+            body = event['object']['text']
+            if body.lower() == 'хлеб':
+                vk.send_message(user_id, 'Выбрал категорию хлеб')
+            elif body.lower() == 'торты':
+                vk.send_message(user_id, 'Выбрал категорию торты')
+            elif body.lower() == 'пирожки':
+                vk.send_message(user_id, 'Выбрал категорию пирожки')
 
-        elif event['type'] == 'group_join':
+            # if 'from_id' in event['object']:
+            #     print('REPLY from %d: %s' % (event['object']['from_id'], event['object']['text']))
+            # else:
+            #     print('REPLY from BOT')
+
+        elif event['type'] == 'message_event':
             pass
         elif event['type'] == 'group_leave':
             pass
