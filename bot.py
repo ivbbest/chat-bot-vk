@@ -3,8 +3,9 @@ import sys
 import random
 from settings import token, version, group_id
 from vk import VKLongPoll
-from keybord import VkKeyboard
+from keyboard import VkKeyboard
 from random import randint
+
 
 template = {
     "type": "carousel",
