@@ -1,5 +1,4 @@
 import requests
-import json
 
 
 class VKLongPoll:
@@ -59,10 +58,7 @@ class VKLongPoll:
         values['access_token'] = self.token
         values['v'] = self.v
 
-        response = self.session.post(
-            self.url + method,
-            values
-        ).json()
+        response = self.session.post(self.url + method, values).json()
 
         if 'error' in response:
             print('ERROR:\n' + response['error']['error_msg'])
@@ -70,10 +66,24 @@ class VKLongPoll:
         else:
             return response
 
-    def send_message(self, user_id, text):
+    def send_message(self, user_id, text, keyboard='', random_id=0):
         values = {
             'user_id': user_id,
-            'message': text
+            'message': text,
+            'keyboard': keyboard,
+            'random_id': random_id,
+
+        }
+
+        self.method('messages.send', values)
+
+    def send_message_carousel(self, user_id, text, random_id=0, template=''):
+        values = {
+            'user_id': user_id,
+            'message': text,
+            'random_id': random_id,
+            'template': template
+
         }
 
         self.method('messages.send', values)
