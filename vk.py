@@ -1,4 +1,5 @@
 import requests
+import sys
 
 
 class VKLongPoll:
@@ -99,5 +100,5 @@ class VKLongPoll:
             res = requests.get(users_url, params={'access_token': self.token, 'v': self.v, **user_params})
             return res.json()['response'][0]['first_name']
         except Exception as e:
-            print('Error user name', type(e))
+            print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
 

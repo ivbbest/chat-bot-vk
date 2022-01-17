@@ -1,6 +1,4 @@
-import json
 import sys
-import random
 from settings import token, version, group_id
 from vk import VKLongPoll
 from keyboard import VkKeyboard, create_template_carousel

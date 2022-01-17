@@ -25,7 +25,7 @@ def create_template_carousel(category):
         # breakpoint()
         return json.dumps(template)
     except Exception as e:
-        print('Error template', type(e))
+        print('Error template', e, type(e), sys.exc_info()[-1].tb_lineno)
 
 
 class VkKeyboard:

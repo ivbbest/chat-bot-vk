@@ -1,13 +1,13 @@
 import requests
 import configparser
-import json
+from settings import token, version, group_id
 
 # Получаем из конфига токен для вк
-config = configparser.ConfigParser()
-config.read("settings.ini")
-token = config["VK"]["token"]
-version = '5.131'
-group_id = '210116210'
+# config = configparser.ConfigParser()
+# config.read('settings.ini')
+token = token
+version = version
+group_id = group_id
 
 # получение ответа от сервера
 data = requests.get('https://api.vk.com/method/groups.getLongPollServer',
