@@ -34,7 +34,7 @@ class VkKeyboard:
     :type one_time: bool
     """
 
-    def __init__(self, one_time=False, inline=False):
+    def __init__(self, one_time=True, inline=False):
         self.one_time = one_time
         self.inline = inline
         self.lines = [[]]
@@ -94,3 +94,15 @@ class VkKeyboard:
                 raise ValueError(f'Max {MAX_DEFAULT_LINES} lines for default keyboard')
 
         self.lines.append([])
+
+    def create_keyboard_in_bot(self):
+        # keyboard_1 = VkKeyboard()
+        category = db.select_all_category()
+
+        for cat in category:
+            self.add_button(label=cat)
+
+        self.add_line()
+        self.add_button(
+            label="Назад"
+        )
