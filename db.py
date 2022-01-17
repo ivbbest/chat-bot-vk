@@ -62,6 +62,22 @@ def select_all_menu(category):
         print("Ошибка при подключении к sqlite", error)
 
 
+# выбрать все продукты из базы
+def select_all_product():
+    try:
+        connect = sq.connect(db)
+        product = list()
+
+        with connect:
+            data = connect.execute("""SELECT DISTINCT product FROM PRODUCT""")
+
+            for row in data:
+                product.append(row)
+
+            return [prod[0] for prod in product]
+    except sq.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+
 # create_db()
 # select_all_category()
-print(select_all_menu('Торт'))
+# print(select_all_menu('Хлеб'))
