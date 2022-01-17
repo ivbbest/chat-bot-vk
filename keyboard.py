@@ -106,3 +106,4 @@ class VkKeyboard:
         self.add_button(
             label="Назад"
         )
+
