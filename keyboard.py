@@ -1,8 +1,5 @@
 import json
-
-MAX_BUTTONS_ON_LINE = 5
-MAX_DEFAULT_LINES = 10
-MAX_INLINE_LINES = 6
+from settings import MAX_BUTTONS_ON_LINE, MAX_INLINE_LINES, MAX_DEFAULT_LINES
 
 
 class VkKeyboard:
