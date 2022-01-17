@@ -1,9 +1,9 @@
 import sqlite3 as sq
+from settings import menu, db
 
-db_file = 'product.db'
 
-
-def create_db(db):
+# создание базы данных с информацией
+def create_db():
     try:
         connect = sq.connect(db)
 
@@ -19,46 +19,51 @@ def create_db(db):
                 );
             """)
 
-        sql = 'INSERT INTO PRODUCT (id_category, category, product, description, url) values(?, ?, ?, ?, ?)'
+        sql = 'INSERT INTO PRODUCT (category, product, description, url) values(?, ?, ?, ?)'
 
-        data = [
-            (1, 'Хлеб', 'Хлеб ржаной', 'Хлеб ржаной - очень вкусный из натуральных продуктов',
-             '-210116210_457239020'),
-            (1, 'Хлеб', 'Хлеб овсяный', 'Хлеб овсяный - очень вкусный из натуральных продуктов',
-             '-210116210_457239018'),
-            (1, 'Хлеб', 'Хлеб белый', 'Хлеб белый - очень вкусный из натуральных продуктов',
-             '-210116210_457239019'),
-            (2, 'Торт', 'Торт Киевский', 'Торт Киевский - очень вкусный из натуральных продуктов',
-             '-210116210_457239021'),
-            (2, 'Торт', 'Торт Наполеон', 'Торт Наполеон - очень вкусный из натуральных продуктов',
-             '-210116210_457239022'),
-            (2, 'Торт', 'Торт Медовик', 'Торт Медовик - очень вкусный из натуральных продуктов',
-             '-210116210_457239023'),
-            (3, 'Пирожки', 'Пирожок с капустой', 'Пирожок с капустой - очень вкусный из натуральных продуктов',
-             '-210116210_457239024'),
-            (3, 'Пирожки', 'Пирожок мясной', 'Пирожок мясной - очень вкусный из натуральных продуктов',
-             '-210116210_457239025'),
-            (3, 'Пирожки', 'Пирожок фруктовый', 'Пирожок фруктовый - очень вкусный из натуральных продуктов',
-             '-210116210_457239026'),
-        ]
         with connect:
-            connect.executemany(sql, data)
-
+            connect.executemany(sql, menu)
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
 
 
-def select_db(db):
+# выбрать только уникальные категории из базы
+def select_all_category():
     try:
         connect = sq.connect(db)
+        category = list()
 
         with connect:
-            data = connect.execute("SELECT * FROM PRODUCT WHERE category='Хлеб'")
+            data = connect.execute("""SELECT DISTINCT category FROM PRODUCT""")
+
             for row in data:
-                print(row)
+                category.append(row)
+
+            return [cat[0] for cat in category]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
+        return
 
 
-# create_db(db_file)
-select_db(db_file)
+# выбрать название товара, описание и картинку, которая уже на стене висит
+def select_all_menu(category):
+    try:
+        connect = sq.connect(db)
+        info_menu = list()
+
+        with connect:
+            sql_query = """SELECT product, description, url FROM PRODUCT WHERE category=?"""
+            data = connect.execute(sql_query, (category,))
+
+            for row in data:
+                info_menu.append(row)
+
+            return [product for product in info_menu]
+    except sq.Error as error:
+        print("Ошибка при подключении к sqlite", error)
+        return
+
+
+# create_db()
+# select_all_category()
+# select_all_menu('Хлеб')
