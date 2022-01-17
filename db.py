@@ -42,7 +42,6 @@ def select_all_category():
             return [cat[0] for cat in category]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
-        return
 
 
 # выбрать название товара, описание и картинку, которая уже на стене висит
@@ -61,9 +60,8 @@ def select_all_menu(category):
             return [product for product in info_menu]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
-        return
 
 
 # create_db()
 # select_all_category()
-# select_all_menu('Хлеб')
+print(select_all_menu('Торт'))
