@@ -90,10 +90,14 @@ class VKLongPoll:
 
     # Получим имя пользователя
     def users_name_get(self, user_id=''):
-        users_url = self.url + 'users.get'
-        user_params = {
-            'count': 1000,
-            'user_id': user_id,
-        }
-        res = requests.get(users_url, params={'access_token': self.token, 'v': self.v, **user_params})
-        return res.json()['response'][0]['first_name']
+        try:
+            users_url = self.url + 'users.get'
+            user_params = {
+                'count': 1000,
+                'user_id': user_id,
+            }
+            res = requests.get(users_url, params={'access_token': self.token, 'v': self.v, **user_params})
+            return res.json()['response'][0]['first_name']
+        except Exception as e:
+            print('Error user name', type(e))
+
