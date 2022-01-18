@@ -1,9 +1,11 @@
 import sqlite3 as sq
-from settings import menu, db
+from config import menu, db
 
 
-# создание базы данных с информацией
 def create_db():
+    """
+    Cоздание базы данных с информацией
+    """
     try:
         connect = sq.connect(db)
 
@@ -27,8 +29,10 @@ def create_db():
         print("Ошибка при подключении к sqlite", error)
 
 
-# выбрать только уникальные категории из базы
 def select_all_category():
+    """
+    Выбрать только уникальные категории из базы
+    """
     try:
         connect = sq.connect(db)
         category = list()
@@ -44,15 +48,17 @@ def select_all_category():
         print("Ошибка при подключении к sqlite", error)
 
 
-# выбрать название товара, описание и картинку, которая уже на стене висит
 def select_all_menu(category):
+    """
+    Выбрать название товара, описание и картинку, которая уже на стене висит
+    """
     try:
         connect = sq.connect(db)
         info_menu = list()
 
         with connect:
             sql_query = """SELECT product, description, url FROM PRODUCT WHERE category=?"""
-            data = connect.execute(sql_query, (category,))
+            data = connect.execute(sql_query, (category.capitalize(),))
 
             for row in data:
                 info_menu.append(row)
@@ -62,22 +68,19 @@ def select_all_menu(category):
         print("Ошибка при подключении к sqlite", error)
 
 
-# выбрать все продукты из базы
 def select_all_product():
+    """
+    Выбрать все продукты из базы
+    """
     try:
         connect = sq.connect(db)
         product = list()
 
         with connect:
             data = connect.execute("""SELECT DISTINCT product FROM PRODUCT""")
-
             for row in data:
                 product.append(row)
 
             return [prod[0] for prod in product]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
-
-# create_db()
-# select_all_category()
-# print(select_all_menu('Хлеб'))
