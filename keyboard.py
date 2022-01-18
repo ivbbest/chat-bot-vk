@@ -22,15 +22,15 @@ class VkKeyboard:
             'buttons': self.lines
         }
 
-    def get_keyboard(self, *args, **kwargs):
+    def get_keyboard(self):
         """ Получить json клавиатуры """
-        return json.dumps(self.keyboard, *args, **kwargs)
+        return json.dumps(self.keyboard, ensure_ascii=False).encode('utf-8')
 
-    def get_empty_keyboard(self):
-        self.keyboard['buttons'] = []
-        return self.get_keyboard()
+    # def get_empty_keyboard(self):
+    #     self.keyboard['buttons'] = []
+    #     return self.get_keyboard()
 
-    def add_button(self, label, color='secondary', payload=None):
+    def add_button(self, label, color='positive', payload=None):
         """ Добавить кнопку с текстом.
             Максимальное количество кнопок на строке - MAX_BUTTONS_ON_LINE
         :param label: Надпись на кнопке и текст, отправляющийся при её нажатии.
@@ -82,11 +82,15 @@ class VkKeyboard:
             for cat in category:
                 if cat == 'Назад':
                     self.add_line()
-                    self.add_button(label=cat)
+                    self.add_button(label=cat, color='secondary')
                 else:
                     self.add_button(label=cat)
         else:
-            choice = ['Да', 'Нет']
+            choice = ['Да', 'Нет', 'Завершить']
 
             for ch in choice:
-                self.add_button(label=ch)
+                if ch == 'Завершить':
+                    self.add_line()
+                    self.add_button(label=ch, color='negative')
+                else:
+                    self.add_button(label=ch)
