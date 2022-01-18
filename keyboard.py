@@ -1,12 +1,11 @@
 import json
 from config import MAX_BUTTONS_ON_LINE, MAX_INLINE_LINES, MAX_DEFAULT_LINES
-from cha
+import db
 
 
 class VkKeyboard:
-    """ Класс для создания клавиатуры для бота (https://vk.com/dev/bots_docs_3)
-    :param one_time: Если True, клавиатура исчезнет после нажатия на кнопку
-    :type one_time: bool
+    """
+    Класс для создания клавиатуры для бота
     """
 
     def __init__(self, one_time=True, inline=False):
@@ -22,18 +21,15 @@ class VkKeyboard:
         }
 
     def get_keyboard(self):
-        """ Получить json клавиатуры """
+        """
+        Получить json клавиатуры
+        """
         return json.dumps(self.keyboard, ensure_ascii=False).encode('utf-8')
 
     def add_button(self, label, color='positive', payload=None):
-        """ Добавить кнопку с текстом.
-            Максимальное количество кнопок на строке - MAX_BUTTONS_ON_LINE
-        :param label: Надпись на кнопке и текст, отправляющийся при её нажатии.
-        :type label: str
-        :param color: цвет кнопки.
-        :type color: VkKeyboardColor or str
-        :param payload: Параметр для callback api
-        :type payload: str or list or dict
+        """
+        Добавить кнопку с текстом.
+        Максимальное количество кнопок на строке - MAX_BUTTONS_ON_LINE
         """
 
         current_line = self.lines[-1]
@@ -56,8 +52,9 @@ class VkKeyboard:
         })
 
     def add_line(self):
-        """ Создаёт новую строку, на которой можно размещать кнопки.
-            Максимальное количество строк:
+        """
+        Создаёт новую строку, на которой можно размещать кнопки.
+        Максимальное количество строк:
                Стандартное отображение - MAX_DEFAULT_LINES;
                Inline-отображение - MAX_INLINE_LINES.
         """
@@ -71,6 +68,9 @@ class VkKeyboard:
         self.lines.append([])
 
     def create_keyboard(self, menu=True):
+        """
+        Создание клавиатуры
+        """
         if menu:
             category = db.select_all_category()
             category.append('Назад')
