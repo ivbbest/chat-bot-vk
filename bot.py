@@ -1,7 +1,7 @@
 from config import version, group_id, token
-from vk import VKLongPoll
-from keyboard import VkKeyboard
-from template_carousel import create_template_carousel
+from vk.vk import VKLongPoll
+from vk.keyboard import VkKeyboard
+from vk.template_carousel import create_template_carousel
 from random import randint
 import db
 
