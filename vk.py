@@ -5,7 +5,6 @@ import sys
 class VKLongPoll:
 
     def __init__(self, token, group_id, version):
-
         self.key = None
         self.server = None
         self.ts = 0
@@ -19,6 +18,9 @@ class VKLongPoll:
         self.connect()
 
     def connect(self):
+        """
+        Возвращает данные для подключения к Bots Longpoll API.
+        """
         response = self.method('groups.getLongPollServer', {'group_id': self.id})
 
         try:
@@ -30,6 +32,9 @@ class VKLongPoll:
             print(response)
 
     def check(self):
+        """
+        Проверка корректности информации
+        """
         values = {
             'act': 'a_check',
             'key': self.key,
@@ -50,11 +55,17 @@ class VKLongPoll:
             self.connect()
 
     def listen(self):
+        """
+        Прослушиваем входящую информацию в чат боте
+        """
         while True:
             for event in self.check():
                 yield event
 
     def method(self, method, values):
+        """
+        Абстрактный метод, чтобы отправлять разные запросы из VK API
+        """
         values = values.copy() if values else {}
         values['access_token'] = self.token
         values['v'] = self.v
@@ -68,17 +79,22 @@ class VKLongPoll:
             return response
 
     def send_message(self, user_id, text, keyboard='', random_id=0):
+        """
+        Отправка в чат-боте клавиатуры и кнопок
+        """
         values = {
             'user_id': user_id,
             'message': text,
             'keyboard': keyboard,
-            'random_id': random_id,
-
+            'random_id': random_id
         }
 
         self.method('messages.send', values)
 
     def send_message_carousel(self, user_id, text, random_id=0, template=''):
+        """
+        Отправка в чат-боте карусели из сообщений из картинки, шаблона, title, description
+        """
         values = {
             'user_id': user_id,
             'message': text,
@@ -89,8 +105,10 @@ class VKLongPoll:
 
         self.method('messages.send', values)
 
-    # Получим имя пользователя
     def users_name_get(self, user_id=''):
+        """
+        Получить имя пользователя
+        """
         try:
             users_url = self.url + 'users.get'
             user_params = {
@@ -101,4 +119,3 @@ class VKLongPoll:
             return res.json()['response'][0]['first_name']
         except Exception as e:
             print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
-

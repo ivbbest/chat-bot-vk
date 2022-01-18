@@ -1,7 +1,6 @@
 import json
-from settings import MAX_BUTTONS_ON_LINE, MAX_INLINE_LINES, MAX_DEFAULT_LINES
-import db
-import sys
+from config import MAX_BUTTONS_ON_LINE, MAX_INLINE_LINES, MAX_DEFAULT_LINES
+from cha
 
 
 class VkKeyboard:
@@ -25,10 +24,6 @@ class VkKeyboard:
     def get_keyboard(self):
         """ Получить json клавиатуры """
         return json.dumps(self.keyboard, ensure_ascii=False).encode('utf-8')
-
-    # def get_empty_keyboard(self):
-    #     self.keyboard['buttons'] = []
-    #     return self.get_keyboard()
 
     def add_button(self, label, color='positive', payload=None):
         """ Добавить кнопку с текстом.
