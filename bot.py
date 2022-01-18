@@ -9,7 +9,7 @@ import db
 
 def create_keyword():
     keyword = db.select_all_category()
-    keyword.extend(['Назад'])
+
     return [key.lower() for key in keyword]
 
 
@@ -40,20 +40,19 @@ def main():
                 vk.send_message(user_id, 'Вот наша продукция. Выбирай;-)', keyboard=menu_keyboard.get_keyboard(),
                                 random_id=randint(0, 100))
 
-            elif body.lower() in keywords:
-                if body.lower() == 'назад':
+            elif body.lower() == 'назад':
                     print('Попал в блок Назад')
                     print()
                     vk.send_message(user_id, '')
                     continue
 
-                else:
+            elif body.lower() in keywords:
                     print('Попал в блок категории')
                     print()
                     vk.send_message_carousel(user_id, f'Выбрал категорию {body.capitalize()}',
                                              template=create_template_carousel(body),
                                              random_id=randint(0, 100))
-                    vk.send_message(user_id, 'Вот наша продукция. Выбирай;-)',
+                    vk.send_message(user_id, 'Еще вот что у нас в меню',
                                     keyboard=menu_keyboard.get_keyboard(),
                                     random_id=randint(0, 100))
 
@@ -68,10 +67,6 @@ def main():
                 print()
                 vk.send_message(user_id, 'С тобой было очень приятно. Пока;-)', random_id=randint(0, 100))
                 break
-
-            else:
-                vk.send_message(user_id, 'Мне непонятно ваше сообщение. Попробуйте что-то другое',
-                                random_id=randint(0, 100))
 
         else:
             print(event)
