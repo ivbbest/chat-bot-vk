@@ -103,7 +103,7 @@ celerybeat.pid
 *.sage.py
 
 # My code
-settings.py
+config.py
 settings.ini
 readme.txt
 test.py
