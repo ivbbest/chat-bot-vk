@@ -4,30 +4,6 @@ import db
 import sys
 
 
-# создание шаблона для карусели товаров
-def create_template_carousel(category):
-    try:
-        products = db.select_all_menu(category)
-        product_info = list()
-        for product in products:
-            title, description, photo_id = product
-            all_element = dict([('buttons', [{
-                "action": {
-                    "type": "text",
-                    "label": "Заказать"
-                }
-            }]), ('description', description),
-                                ('photo_id', photo_id), ('title', title)
-                                ])
-            product_info.append(all_element)
-
-        template = dict([("type", "carousel"), ("elements", product_info)])
-        # breakpoint()
-        return json.dumps(template)
-    except Exception as e:
-        print('Error template', e, type(e), sys.exc_info()[-1].tb_lineno)
-
-
 class VkKeyboard:
     """ Класс для создания клавиатуры для бота (https://vk.com/dev/bots_docs_3)
     :param one_time: Если True, клавиатура исчезнет после нажатия на кнопку
@@ -49,6 +25,10 @@ class VkKeyboard:
     def get_keyboard(self, *args, **kwargs):
         """ Получить json клавиатуры """
         return json.dumps(self.keyboard, *args, **kwargs)
+
+    def get_empty_keyboard(self):
+        self.keyboard['buttons'] = []
+        return self.get_keyboard()
 
     def add_button(self, label, color='secondary', payload=None):
         """ Добавить кнопку с текстом.
@@ -95,15 +75,18 @@ class VkKeyboard:
 
         self.lines.append([])
 
-    def create_keyboard_in_bot(self):
-        # keyboard_1 = VkKeyboard()
-        category = db.select_all_category()
+    def create_keyboard(self, menu=True):
+        if menu:
+            category = db.select_all_category()
+            category.append('Назад')
+            for cat in category:
+                if cat == 'Назад':
+                    self.add_line()
+                    self.add_button(label=cat)
+                else:
+                    self.add_button(label=cat)
+        else:
+            choice = ['Да', 'Нет']
 
-        for cat in category:
-            self.add_button(label=cat)
-
-        self.add_line()
-        self.add_button(
-            label="Назад"
-        )
-
+            for ch in choice:
+                self.add_button(label=ch)
