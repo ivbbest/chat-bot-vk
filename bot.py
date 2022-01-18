@@ -29,7 +29,7 @@ def main():
             choice_keyboard.create_keyboard(menu=False)
             vk.send_message(user_id, f'{name_user}, привет. Тебе показать наше меню?', keyboard=choice_keyboard.get_keyboard(),
                             random_id=randint(0, 100))
-            breakpoint()
+
             if body.lower() == 'да':
                 print('Попал в блок Да')
                 print()
@@ -70,7 +70,8 @@ def main():
                 break
 
             else:
-                vk.send_message(user_id, 'Мне непонятно ваше сообщение. Попробуйте что-то другое', random_id=randint(0, 100))
+                vk.send_message(user_id, 'Мне непонятно ваше сообщение. Попробуйте что-то другое',
+                                random_id=randint(0, 100))
 
         else:
             print(event)
