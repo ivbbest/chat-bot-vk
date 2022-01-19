@@ -79,29 +79,19 @@ class VKLongPoll:
         else:
             return response
 
-    def send_message(self, user_id, text, keyboard='', random_id=0):
+    def send_message(self, user_id, text, keyboard=None, template=None, random_id=0):
         """
-        Отправка в чат-боте клавиатуры и кнопок
+        В зависимости от параметров:
+        1. Отправка в чат-боте клавиатуры и кнопок.
+        2. Отправка в чат-боте карусели из сообщений из картинки,
+        шаблона, title, description
         """
         values = {
             'user_id': user_id,
             'message': text,
             'keyboard': keyboard,
+            'template': template,
             'random_id': random_id
-        }
-
-        self.method('messages.send', values)
-
-    def send_message_carousel(self, user_id, text, random_id=0, template=''):
-        """
-        Отправка в чат-боте карусели из сообщений из картинки, шаблона, title, description
-        """
-        values = {
-            'user_id': user_id,
-            'message': text,
-            'random_id': random_id,
-            'template': template
-
         }
 
         self.method('messages.send', values)
@@ -116,7 +106,13 @@ class VKLongPoll:
                 'count': 1000,
                 'user_id': user_id,
             }
-            res = requests.get(users_url, params={'access_token': self.token, 'v': self.v, **user_params})
+            res = requests.get(users_url, params={
+                'access_token': self.token,
+                'v': self.v,
+                **user_params
+            }
+                               )
+
             return res.json()['response'][0]['first_name']
         except Exception as e:
             print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
