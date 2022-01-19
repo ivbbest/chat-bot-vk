@@ -1,6 +1,7 @@
 import json
 from config import MAX_BUTTONS_ON_LINE, MAX_INLINE_LINES, MAX_DEFAULT_LINES
 import db
+import sys
 
 
 class VkKeyboard:
@@ -69,23 +70,28 @@ class VkKeyboard:
 
     def create_keyboard(self, menu=True):
         """
-        Создание клавиатуры
+        Создание клавиатуры:
+        menu=True - если указан такой индикатор, то создается клавиатура с меню.
+        menu=False - если указан такой индикатор, то создается клавиатура с Да/Нет/Завершить.
         """
-        if menu:
-            category = db.select_all_category()
-            category.append('Назад')
-            for cat in category:
-                if cat == 'Назад':
-                    self.add_line()
-                    self.add_button(label=cat, color='secondary')
-                else:
-                    self.add_button(label=cat)
-        else:
-            choice = ['Да', 'Нет', 'Завершить']
+        try:
+            if menu:
+                category = db.select_all_category()
+                category.append('Назад')
+                for cat in category:
+                    if cat == 'Назад':
+                        self.add_line()
+                        self.add_button(label=cat, color='secondary')
+                    else:
+                        self.add_button(label=cat)
+            else:
+                choice = ['Да', 'Нет', 'Завершить']
 
-            for ch in choice:
-                if ch == 'Завершить':
-                    self.add_line()
-                    self.add_button(label=ch, color='negative')
-                else:
-                    self.add_button(label=ch)
+                for ch in choice:
+                    if ch == 'Завершить':
+                        self.add_line()
+                        self.add_button(label=ch, color='negative')
+                    else:
+                        self.add_button(label=ch)
+        except Exception as e:
+            print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)

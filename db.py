@@ -1,5 +1,6 @@
 import sqlite3 as sq
 from config import menu, db
+import sys
 
 
 def create_db():
@@ -27,6 +28,8 @@ def create_db():
             connect.executemany(sql, menu)
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
+    except Exception as e:
+        print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
 
 
 def select_all_category():
@@ -46,6 +49,8 @@ def select_all_category():
             return [cat[0] for cat in category]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
+    except Exception as e:
+        print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
 
 
 def select_all_menu(category):
@@ -66,6 +71,8 @@ def select_all_menu(category):
             return [product for product in info_menu]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
+    except Exception as e:
+        print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
 
 
 def select_all_product():
@@ -84,3 +91,5 @@ def select_all_product():
             return [prod[0] for prod in product]
     except sq.Error as error:
         print("Ошибка при подключении к sqlite", error)
+    except Exception as e:
+        print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)

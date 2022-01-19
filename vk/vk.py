@@ -28,8 +28,9 @@ class VKLongPoll:
             self.key = response['response']['key']
             self.ts = response['response']['ts']
             print('[LongPoll] Connection TRUE!')
-        except:
-            print(response)
+        except Exception as e:
+            print('response = ', response)
+            print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
 
     def check(self):
         """
