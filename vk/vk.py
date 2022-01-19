@@ -3,7 +3,6 @@ import sys
 
 
 class VKLongPoll:
-
     def __init__(self, token, group_id, version):
         self.key = None
         self.server = None

@@ -8,7 +8,6 @@ class VkKeyboard:
     """
     Класс для создания клавиатуры для бота
     """
-
     def __init__(self, one_time=True, inline=False):
         self.one_time = one_time
         self.inline = inline
