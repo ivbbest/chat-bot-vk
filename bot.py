@@ -38,10 +38,10 @@ def main():
                     continue
 
                 elif body.lower() in keywords:
-                    vk.send_message_carousel(user_id, f'{name_user}, ты выбрал категорию {body}',
+                    vk.send_message(user_id, f'{name_user}, ты выбрал категорию {body}',
                                              template=create_template_carousel(body),
                                              random_id=randint(0, 100))
-                    time.sleep(2)
+                    time.sleep(1)
 
                     vk.send_message(user_id, 'Еще вот что у нас в меню',
                                     keyboard=menu_keyboard.get_keyboard(),

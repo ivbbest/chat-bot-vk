@@ -27,7 +27,7 @@ class VKLongPoll:
             self.server = response['response']['server']
             self.key = response['response']['key']
             self.ts = response['response']['ts']
-            print('[LongPoll] Connection TRUE!')
+            return '[LongPoll] Connection TRUE!'
         except Exception as e:
             print('response = ', response)
             print('Error user name', e, type(e), sys.exc_info()[-1].tb_lineno)
@@ -96,7 +96,7 @@ class VKLongPoll:
 
         self.method('messages.send', values)
 
-    def users_name_get(self, user_id=''):
+    def users_name_get(self, user_id=None):
         """
         Получить имя пользователя
         """
