@@ -1,5 +1,6 @@
 import requests
 import sys
+import time
 
 
 class VKLongPoll:
@@ -59,8 +60,15 @@ class VKLongPoll:
         Прослушиваем входящую информацию в чат боте
         """
         while True:
-            for event in self.check():
-                yield event
+            try:
+                for event in self.check():
+                    yield event
+            except (requests.exceptions.ConnectionError, TimeoutError,
+                    requests.exceptions.Timeout,
+                    requests.exceptions.ConnectTimeout,
+                    requests.exceptions.ReadTimeout):
+                print("\n Переподключение к серверам ВК \n")
+                time.sleep(3)
 
     def method(self, method, values):
         """
